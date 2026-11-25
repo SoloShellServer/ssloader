@@ -20,13 +20,16 @@ is logged to `Logs\ssloader.log`.
   readable behind it, and the client's BLP reader always copies a full 0x494-byte header. A smaller BLP at the very
   end of the block then reads past it (ERROR #132 at 0x005A83DA). After the list, ssloader lowers the limit so that
   the last 4 KB stay free (`FixTextureReadBuffer` in `ssloader.c`).
+- **Quest objects sparkle** (`sparkle.c`). A chest, goober or generic object that the player needs for a quest gets
+  the client's own lootable-corpse sparkle. The server marks such objects with bit 0x08 of `GAMEOBJECT_DYN_FLAGS`;
+  with a server that does not set it, nothing changes.
 
 ## Build
 
 Windows with Visual Studio 2022 (C++ workload): run `ssloader\build.cmd`. It writes `ssloader.dll` (32-bit, like
 WoW.exe) into this folder. `/Brepro` and no debug information: the same source gives the same bytes, and no build
 path ends up in the DLL. Built from this source, `ssloader.dll` has the SHA-1
-`97b8e7105d8a3df6332c90ee35229387f0651f79`.
+`8709f949dc11af7962dc4a73f352ae3e371f1f30`.
 
 ## License
 

@@ -8,7 +8,8 @@
  * Empty lines and lines starting with # or ; are ignored. After a DLL is loaded, its export
  * "Load" is called if it has one. Everything is logged to Logs\ssloader.log.
  *
- * After the list it keeps the end of a moved texture read buffer free (FixTextureReadBuffer).
+ * After the list it keeps the end of a moved texture read buffer free (FixTextureReadBuffer) and makes
+ * quest objects sparkle like a lootable corpse (sparkle.c).
  *
  * Build (32-bit, like the client): build.cmd
  */
@@ -18,6 +19,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include "sparkle.h"
 
 #define MAX_LIST (256 * 1024)
 #define PATH_CHARS (MAX_PATH * 2)
@@ -41,6 +43,11 @@ static void Log(const char *prefix, const char *text, int len)
 	line[n++] = '\r';
 	line[n++] = '\n';
 	WriteFile(logFile, line, n, &written, NULL);
+}
+
+static void LogText(const char *text)
+{
+	Log("", text, -1);
 }
 
 static void LoadOne(const WCHAR *dir, const char *name, int len)
@@ -199,6 +206,7 @@ void func1(void)
 		}
 	}
 	FixTextureReadBuffer();
+	SparkleInstall(LogText);
 
 	if (logFile != INVALID_HANDLE_VALUE) {
 		CloseHandle(logFile);
